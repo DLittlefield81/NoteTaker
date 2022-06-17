@@ -5,6 +5,12 @@
 const express = require('express');
 const path = require('path');
 const notesDB = require('./db/db.json');
+const uuid = require('./helpers/uuid');
+// const {
+//     readFromFile,
+//     readAndAppend,
+//     writeToFile,
+// } = require('../helpers/fsUtils');
 const app = express();
 const moment = require('moment');
 const fs = require('fs');
@@ -13,9 +19,30 @@ const logger = (req, res, next) => {
     next();
 };
 
- // API'S
- // SETS UP API FOR NOTES
- app.get('/api/notes', (req, res) => res.json(notesDB));
+// API'S
+// SETS UP API FOR NOTES
+app.get('/api/notes', (req, res) => res.json(notesDB));
+//app.get('/api/notes/:id', (req, res) => {
+// const found = notes.some(note => note)
+//     res.json(notesDB.filter(note => note.id === parseInt(req.params.id)));
+// });  
+// DELETE Route for a specific tip
+// notesDB.delete('/api/notes/:id', (req, res) => {
+//     const noteId = req.params.id;
+//     readFromFile('./db/db.json')
+//         .then((data) => JSON.parse(data))
+//         .then((json) => {
+//             // Make a new array of all tips except the one with the ID provided in the URL
+//             const result = json.filter((note) => noteDB.id !== noteId);
+
+//             // Save that array to the filesystem
+//             writeToFile('./db/db.json', result);
+
+//             // Respond to the DELETE request
+//             res.json(`Item ${noteId} has been deleted 🗑️`);
+//         });
+// });
+
 
 
 // //SETS ERROR CODE
@@ -72,9 +99,10 @@ app.post('/api/notes', (req, res) => {
     if (title && text) {
         // Variable for the object we will save
         const newNote = {
+            id: uuid(),
             title,
-            text,
-            note_id: uuid()
+            text
+
         };
 
         // Obtain existing reviews
