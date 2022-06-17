@@ -1,110 +1,64 @@
 const notes = require('express').Router();
- const db = require('../db/db.json');
- const uuid = require('../helpers/uuid');
+const uuid = require('../helpers/uuid');
+const {
+    readFromFile,
+    readAndAppend,
+    writeToFile,
+} = require('../helpers/fsUtils');
 
-  const {
-     readFromFile,
-//     readAndAppend,
-//     writeToFile,
- } = require('../helpers/fsUtils');
-
-
-// API'S
-// SETS UP API FOR NOTES
+//GET Route for retrieving all the tips
 notes.get('/', (req, res) => {
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
-
-
-//notes.get('/:id', (req, res) => {
-   // res.json(db.filter(db => db.id === parseInt(req.params.id)))
-    // const found = notes.some(note => note)
-    // res.json(notesDB.filter(note => note.id === parseInt(req.params.id)));
-    // if (found) {
-    //     res.json(notes.filter(note => note.id === parseInt(req.params.id)))
-    // } else {
-    //     res.status(400).json({ msg: `No note found with the id of ${req.params.id}` })
-    // }
-//});
-
-// POST request to add a review
-// notes.post('/api/notes', (req, res) => {
-//     // Log that a POST request was received
-//     console.info(`${req.method} request received to add a review`);
-
-//     // Destructuring assignment for the items in req.body
-//     const { title, text } = req.body;
-
-//     // If all the required properties are present
-//     if (title && text) {
-//         // Variable for the object we will save
-//         const newNote = {
-//             id: uuid(),
-//             title,
-//             text
-
-//         };
-
-//         // Obtain existing notes
-//         fs.readFile(db, 'utf8', (err, data) => {
-//             if (err) {
-//                 console.error(err);
-//             } else {
-//                 // Convert string into JSON object
-//                 const parsedNotes = JSON.parse(data);
-
-//                 // Add a new review
-//                 parsedNotes.push(newNote);
-
-//                 // Write updated reviews back to the file
-//                 fs.writeFile(
-//                     db,
-//                     JSON.stringify(parsedNotes, null, 4),
-//                     (writeErr) =>
-//                         writeErr
-//                             ? console.error(writeErr)
-//                             : console.info('Successfully updated database!')
-//                 );
-//             }
-//         })
-//     }
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// GET Route for a specific tip
+notes.get('/:id', (req, res) => {
+    const noteId = req.params.id;
+    readFromFile('./db/db.json')
+        .then((data) => JSON.parse(data))
+        .then((json) => {
+            const result = json.filter((note) => note.id === noteId);
+            return result.length > 0
+                ? res.json(result)
+                : res.json('No notes with that ID');
+        });
+});
 
 // DELETE Route for a specific tip
-// db.delete('/api/notes/:id', (req, res) => {
-//     const noteId = req.params.id;
-//     readFromFile(db)
-//         .then((data) => JSON.parse(data))
-//         .then((json) => {
-//             // Make a new array of all tips except the one with the ID provided in the URL
-//             const result = json.filter((note) => db.id !== noteId);
+notes.delete('/:id', (req, res) => {
+    const noteId = req.params.id;
+    readFromFile('./db/db.json')
+        .then((data) => JSON.parse(data))
+        .then((json) => {
+            // Make a new array of all tips except the one with the ID provided in the URL
+            const result = json.filter((note) => note.id !== noteId);
 
-//             // Save that array to the filesystem
-//             writeToFile(db, result);
+            // Save that array to the filesystem
+            writeToFile('./db/db.json', result);
 
-//             // Respond to the DELETE request
-//             res.json(`Item ${noteId} has been deleted 🗑️`);
-//         });
-// });
+            // Respond to the DELETE request
+            res.json(`Item ${noteId} has been deleted 🗑️`);
+        });
+});
 
+// POST Route for a new UX/UI tip
+notes.post('/', (req, res) => {
+    console.log(req.body);
 
+    const { title, text } = req.body;
 
+    if (req.body) {
+        const newNote = {
+            id: uuid(),
+            title,
+            text
+        };
 
+        readAndAppend(newNote, './db/db.json');
+        res.json(`Note added successfully 🚀`);
+    } else {
+        res.error('Error in adding Note');
+    }
+});
 
 module.exports = notes;

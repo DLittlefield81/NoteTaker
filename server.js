@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3001;
 
 // LOG ACTIONS TO CONSOLE
 const logger = (req, res, next) => {
-    console.log(`${req.protocol}:// ${req.get('host')}${req.originalUrl}:${moment().format()} `); //
+    console.log(`${moment().format()} - - ${req.protocol}://${req.get('host')}${req.originalUrl} `); //
     next();
 };
 

@@ -1,23 +1,17 @@
 [
     {
-        "id": "c6f7",
-        "title": "Test Title",
-        "text": "Test text"
-    },
-    {
         "id": "c6f8",
         "title": "Dennis Rules",
         "text": "True story"
     },
     {
-        "id": "c6f6",
-        "title": "fff",
-        "text": "fgg"
+        "id": "b38a",
+        "title": "My dog's name",
+        "text": "My dog's name is topaz, she's a morkie poo"
     },
     {
-        "id": "c6f5",
-        "title": "fda",
-        "text": "fadad"
-        
+        "id": "525b",
+        "title": "Topaz's best friend",
+        "text": "Topaz has a best friend named Cooper"
     }
 ]
