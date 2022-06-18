@@ -6,12 +6,12 @@ const {
     writeToFile,
 } = require('../helpers/fsUtils');
 
-//GET Route for retrieving all the tips
+//GET ROUTE FOR RETRIEVING ALL NOTES
 notes.get('/', (req, res) => {
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
-// GET Route for a specific tip
+// GET SPECIFIC NOTE
 notes.get('/:id', (req, res) => {
     const noteId = req.params.id;
     readFromFile('./db/db.json')
@@ -25,24 +25,24 @@ notes.get('/:id', (req, res) => {
         });
 });
 
-// DELETE Route for a specific tip
+// DELETE SPECIFIC NOTE
 notes.delete('/:id', (req, res) => {
     const noteId = req.params.id;
     readFromFile('./db/db.json')
         .then((data) => JSON.parse(data))
         .then((json) => {
-            // Make a new array of all tips except the one with the ID provided in the URL
+            // FILTER THE ID OUT FOR DELETION
             const result = json.filter((note) => note.id !== noteId);
 
-            // Save that array to the filesystem
+            // WRITE TO DB FILE
             writeToFile('./db/db.json', result);
 
-            // Respond to the DELETE request
+            // CONFIRM DELETION
             res.json(`Item ${noteId} has been deleted 🗑️`);
         });
 });
 
-// POST Route for a new UX/UI tip
+// CREATE NEW NOTE
 notes.post('/', (req, res) => {
     console.log(req.body);
 
