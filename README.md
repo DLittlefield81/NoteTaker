@@ -31,17 +31,15 @@ Follow these steps to install this project on your local machine.
 
 ## Usage
 - After cloning this repository...
-- node index.js
-
+- Production mode: npm start
+- Developer mode: npm run dev
 
 ## Application
-- Link to Deployed Application: HEROKU LINK
+- Link to Deployed Application: https://ancient-coast-88148.herokuapp.com/
 
 
 ## Images
-- -![TeamProfileGenerator](./assets/images/NoteTaker.gif)
-- [CLICK HERE TO VIEW FULL VIDEO](./assets/images/NoteTaker.webm)
-- [CLICK HERE TO VIEW ON GOOGLE DRIVE](./assets/images/NoteTaker.webm)
+- -![TeamProfileGenerator](./assets/images/NoteTaker.png)
 
 
 ## Tests
